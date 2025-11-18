@@ -71,8 +71,6 @@ int main() {
               << std::endl;
     return 0;
   }
-  x += 2;
-  h += 2;
   std::vector<std::vector<char>> maze(x, std::vector<char>(h, ' '));
   std::vector<std::pair<int, int>> cw;
   {
