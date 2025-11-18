@@ -12,10 +12,9 @@ std::uniform_int_distribution<> forward(0, 3);
 
 int wall(std::vector<std::vector<char>> &maze, int i, int j) {
   int rand_f = forward(gen);
-  std::cout << i << " " << j << std::endl;
   switch (rand_f) {
   case 0:
-    if (i - 2 > 0 && maze[i - 2][j] == ' ') {
+    if (i - 2 >= 0 && maze[i - 2][j] == ' ') {
       maze[i - 1][j] = '#';
       maze[i - 2][j] = '#';
       wall(maze, i - 2, j);
@@ -26,7 +25,7 @@ int wall(std::vector<std::vector<char>> &maze, int i, int j) {
     break;
 
   case 1:
-    if (j + 2 < h && maze[i][j + 2] == ' ') {
+    if (j + 2 <= h && maze[i][j + 2] == ' ') {
       maze[i][j + 1] = '#';
       maze[i][j + 2] = '#';
       wall(maze, i, j + 2);
@@ -37,7 +36,7 @@ int wall(std::vector<std::vector<char>> &maze, int i, int j) {
     break;
 
   case 2:
-    if (i + 2 < x && maze[i + 2][j] == ' ') {
+    if (i + 2 <= x && maze[i + 2][j] == ' ') {
       maze[i + 1][j] = '#';
       maze[i + 2][j] = '#';
       wall(maze, i + 2, j);
@@ -48,7 +47,7 @@ int wall(std::vector<std::vector<char>> &maze, int i, int j) {
     break;
 
   case 3:
-    if (j - 2 > 0 && maze[i][j - 2] == ' ') {
+    if (j - 2 >= 0 && maze[i][j - 2] == ' ') {
       maze[i][j - 1] = '#';
       maze[i][j - 2] = '#';
       wall(maze, i, j - 2);
@@ -90,7 +89,6 @@ int main() {
       }
     }
   }
-  std::cout << "init" << std::endl;
   {
     while (cw.size() > 0) {
       std::uniform_int_distribution<> dist(0, cw.size() - 1);
@@ -98,14 +96,8 @@ int main() {
       if (maze[cw[rand].first][cw[rand].second] != '#') {
         maze[cw[rand].first][cw[rand].second] = '#';
         wall(maze, cw[rand].first, cw[rand].second);
-        // for (int i = 0; i < x; i++) {
-        //   for (int j = 0; j < h; j++) {
-        //     std::cout << maze[i][j];
-        //   }
-        //   std::cout << std::endl;
-        // }
-      } else
-        cw.erase(cw.begin() + rand);
+      }
+      cw.erase(cw.begin() + rand);
     }
   }
   for (int i = 0; i < x; i++) {
