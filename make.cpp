@@ -79,6 +79,10 @@ int main() {
       for (int j = 0; j < h; j++) {
         if (i == 0 || i == x - 1 || j == 0 || j == h - 1)
           maze[i][j] = '#';
+        if (i == 1 && j == 1)
+          maze[i][j] = 'S';
+        if (i == x - 2 && j == h - 2)
+          maze[i][j] = 'G';
         else if (i % 2 == 0 && j % 2 == 0) {
           ax.first = i;
           ax.second = j;
