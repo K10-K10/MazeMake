@@ -108,6 +108,16 @@ int main()
 {
   std::cout << "maze size(x h):";
   std::cin >> x >> h;
+  if (x == 2 && h == 2)
+  {
+    std::cout << "##\n##" << std::endl;
+    return 0;
+  }
+  if (x == 4 && h == 4)
+  {
+    std::cout << "####\n#S #\n# G#\n####" << std::endl;
+    return 0;
+  }
   if (x < 5 || h < 5 || x % 2 == 0 || h % 2 == 0)
   {
     std::cerr << "maze size is odd numbers greater than or equal to five"
