@@ -1,62 +1,118 @@
-#include <functional>
 #include <iostream>
 #include <queue>
 #include <string>
-#include <utility>
 #include <vector>
 
-int x, h;
-int cnt = 0;
+int main()
+{
+  std::vector<std::string> maze;
+  std::string line;
 
-using coordinate = std::pair<int, std::pair<int, int>>;
-std::priority_queue<coordinate, std::vector<coordinate>,
-                    std::greater<coordinate>>
-    oq;
-std::priority_queue<coordinate, std::vector<coordinate>,
-                    std::greater<coordinate>>
-    cq;
-
-auto a_star(std::vector<std::vector<int>> &maze, std::pair<int, int> &gore) {
-  coordinate top = oq.top();
-  if (top.second == gore) {
-    return 0;
-  } else {
-    int x = top.second.first, y = top.second.second;
-  }
-}
-
-int main() {
-  std::cout << "input maze size:";
-  std::cin >> x >> h;
-  std::vector<std::vector<char>> maze(x, std::vector<char>(h));
-  std::vector<std ::vector<int>> maze_map(x, std::vector<int>(h, 0));
-  std::pair<int, int> start, gore;
+  std::cout << "Input maze (empty line to finish):" << std::endl;
+  while (std::getline(std::cin, line))
   {
-    char c;
-    for (int i = 0; i < x; i++) {
-      for (int j = 0; j < h; j++) {
-        std::cin.get(c);
-        if (c == 'S' || c == 's') {
-          start.first = i;
-          start.second = j;
-          maze_map[i][j] = 0;
-        }
-        if (c == 'G' || c == 'g') {
-          gore.first = i;
-          gore.second = j;
-        }
-        if (c == '#')
-          maze_map[i][j] = -1;
-        maze[i][j] = c;
+    if (line.empty())
+      break;
+    maze.push_back(line);
+  }
+
+  if (maze.empty())
+  {
+    std::cerr << "No maze input provided" << std::endl;
+    return -1;
+  }
+
+  int rows = maze.size();
+  int cols = maze[0].size();
+
+  int startX = -1, startY = -1;
+  int goalX = -1, goalY = -1;
+
+  for (int i = 0; i < rows; i++)
+  {
+    for (int j = 0; j < (int)maze[i].size(); j++)
+    {
+      if (maze[i][j] == 'S')
+      {
+        startX = i;
+        startY = j;
+      }
+      else if (maze[i][j] == 'G')
+      {
+        goalX = i;
+        goalY = j;
       }
     }
   }
-  // std::pair<int, int> curent = start;
-  coordinate current;
-  current.first = 0;
-  current.second = start;
-  cq.push(current);
-  bool is_gore = false;
+
+  if (startX == -1 || goalX == -1)
+  {
+    std::cerr << "Start (S) or Goal (G) not found" << std::endl;
+    return -1;
+  }
+
+  std::vector<std::vector<bool>> visited(rows, std::vector<bool>(cols, false));
+  std::vector<std::vector<std::pair<int, int>>> parent(
+      rows, std::vector<std::pair<int, int>>(cols, {-1, -1}));
+
+  std::queue<std::pair<int, int>> q;
+  q.push({startX, startY});
+  visited[startX][startY] = true;
+
+  int dx[] = {-1, 0, 1, 0};
+  int dy[] = {0, 1, 0, -1};
+
+  bool found = false;
+
+  while (!q.empty())
+  {
+    auto [cx, cy] = q.front();
+    q.pop();
+
+    if (cx == goalX && cy == goalY)
+    {
+      found = true;
+      break;
+    }
+
+    for (int i = 0; i < 4; i++)
+    {
+      int nx = cx + dx[i];
+      int ny = cy + dy[i];
+
+      if (nx >= 0 && nx < rows && ny >= 0 && ny < (int)maze[nx].size() &&
+          !visited[nx][ny] && maze[nx][ny] != '#')
+      {
+        visited[nx][ny] = true;
+        parent[nx][ny] = {cx, cy};
+        q.push({nx, ny});
+      }
+    }
+  }
+
+  if (!found)
+  {
+    std::cerr << "No solution found" << std::endl;
+    return -1;
+  }
+
+  int px = goalX, py = goalY;
+  while (px != startX || py != startY)
+  {
+    if (maze[px][py] != 'S' && maze[px][py] != 'G')
+    {
+      maze[px][py] = '*';
+    }
+    auto [npx, npy] = parent[px][py];
+    px = npx;
+    py = npy;
+  }
+
+  std::cout << "\nSolved maze:" << std::endl;
+  for (const auto &row : maze)
+  {
+    std::cout << row << std::endl;
+  }
 
   return 0;
 }
