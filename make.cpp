@@ -28,6 +28,7 @@ int wall(std::vector<std::vector<char>> &maze)
   while (!wallFlag)
   {
     cnt = 0;
+    forward.clear();
     if (maze[i - 2][j] != '-')
     {
       cnt++;
