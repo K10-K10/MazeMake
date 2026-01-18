@@ -16,32 +16,50 @@ std::priority_queue<coordinate, std::vector<coordinate>,
                     std::greater<coordinate>>
     cq;
 
-auto a_star(std::vector<std::vector<int>> &maze, std::pair<int, int> &gore) {
+auto a_star(std::vector<std::vector<int>> &maze, std::pair<int, int> &gore)
+{
   coordinate top = oq.top();
-  if (top.second == gore) {
+  if (top.second == gore)
+  {
     return 0;
-  } else {
+  }
+  else
+  {
     int x = top.second.first, y = top.second.second;
   }
 }
 
-int main() {
-  std::cout << "input maze size:";
-  std::cin >> x >> h;
+int main(int argc, char **argv)
+{
+  // std::cout << "input maze size:";
+  // std::cin >> x >> h;
+  if (argc >= 3)
+  {
+    x = std::stoi(argv[1]);
+    h = std::stoi(argv[2]);
+  }
+  else
+  {
+    return -1;
+  }
   std::vector<std::vector<char>> maze(x, std::vector<char>(h));
   std::vector<std ::vector<int>> maze_map(x, std::vector<int>(h, 0));
   std::pair<int, int> start, gore;
   {
     char c;
-    for (int i = 0; i < x; i++) {
-      for (int j = 0; j < h; j++) {
+    for (int i = 0; i < x; i++)
+    {
+      for (int j = 0; j < h; j++)
+      {
         std::cin.get(c);
-        if (c == 'S' || c == 's') {
+        if (c == 'S' || c == 's')
+        {
           start.first = i;
           start.second = j;
           maze_map[i][j] = 0;
         }
-        if (c == 'G' || c == 'g') {
+        if (c == 'G' || c == 'g')
+        {
           gore.first = i;
           gore.second = j;
         }

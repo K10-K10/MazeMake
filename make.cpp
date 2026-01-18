@@ -104,10 +104,18 @@ int wall(std::vector<std::vector<char>> &maze)
   return 0;
 }
 
-int main()
+int main(int argc, char **argv)
 {
-  std::cout << "maze size(x h):";
-  std::cin >> x >> h;
+  if (argc >= 3)
+  {
+    x = std::stoi(argv[1]);
+    h = std::stoi(argv[2]);
+  }
+  else
+  {
+    std::cout << "maze size(x h):";
+    std::cin >> x >> h;
+  }
   if (x == 2 && h == 2)
   {
     std::cout << "##\n##" << std::endl;
