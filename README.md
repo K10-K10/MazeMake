@@ -1,1 +1,1 @@
-# MazeMake
+# MazeMaker
